@@ -7,17 +7,15 @@ namespace SqlAppAzureDB.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        private readonly IProductService _productService;
+        public IndexModel(IProductService productService)
         {
-            _logger = logger;
+            _productService = productService;
         }
         public List<Product> products = new List<Product>();
         public void OnGet()
         {
-            ProductService productService = new ProductService();
-            products = productService.GetProducts();
+            products = _productService.GetProducts();
         }
     }
 }
