@@ -42,3 +42,15 @@ namespace SqlAppAzureDB.Data.Services
         }
     }
 }
+/* can add in seed method-out of scope
+ * create table products
+(
+ID int,
+Name varchar(1000),
+qauntity int
+)
+
+insert into products values (3,'Monitors',150);
+
+select id,Name,qauntity from products
+ * */
