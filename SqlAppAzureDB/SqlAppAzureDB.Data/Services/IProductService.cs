@@ -5,5 +5,6 @@ namespace SqlAppAzureDB.Data.Services
     public interface IProductService
     {
         List<Product> GetProducts();
+        Task<bool> IsBeta();
     }
 }

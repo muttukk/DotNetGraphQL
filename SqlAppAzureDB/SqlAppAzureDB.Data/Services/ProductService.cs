@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.FeatureManagement;
 using SqlAppAzureDB.Data.Models;
 using System.Data.SqlClient;
 
@@ -7,14 +8,28 @@ namespace SqlAppAzureDB.Data.Services
     public class ProductService : IProductService
     {
         private readonly IConfiguration _configuration;
-        public ProductService(IConfiguration configuration)
+        private readonly IFeatureManager _featureManager;
+        public ProductService(IConfiguration configuration,IFeatureManager featureManager)
         {
+            _featureManager = featureManager;
             _configuration = configuration;
         }
 
         private SqlConnection GetConnection()
         {
             return new SqlConnection(_configuration.GetConnectionString("SqlConnection"));
+            // below code while reading from Azure App config
+            //return new SqlConnection(_configuration["SqlConnection"]);
+        }
+
+        public async Task<bool> IsBeta()
+        {
+            // Flag we added in Azure FF
+            if (await _featureManager.IsEnabledAsync("beta"))
+            {
+                return true;
+            }
+            return false;
         }
 
         public List<Product> GetProducts()
