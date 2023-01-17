@@ -6,5 +6,7 @@ namespace SqlAppAzureDB.Data.Services
     {
         List<Product> GetProducts();
         Task<bool> IsBeta();
+
+        Task<List<Product>> GetProductsAsyncFromAzureFunction();
     }
 }

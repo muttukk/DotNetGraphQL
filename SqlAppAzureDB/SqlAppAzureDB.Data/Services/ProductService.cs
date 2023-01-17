@@ -2,6 +2,7 @@
 using Microsoft.FeatureManagement;
 using SqlAppAzureDB.Data.Models;
 using System.Data.SqlClient;
+using System.Text.Json;
 
 namespace SqlAppAzureDB.Data.Services
 {
@@ -54,6 +55,19 @@ namespace SqlAppAzureDB.Data.Services
             }
             connection.Close();
             return products;
+        }
+
+        public async Task<List<Product>> GetProductsAsyncFromAzureFunction()
+        {
+            // read from config
+            string functionUrl = "https://newapp200030.azurewebsites.net/api/GetProducts?code=RVVlGJpJ4paRmO6z6GStMbNZPPMeUDaHg6UzfFi/xrOMSEDMRKzNLg==";
+            using (HttpClient client = new HttpClient())
+            { 
+                HttpResponseMessage response=await client.GetAsync(functionUrl);
+                string content=await response.Content.ReadAsStringAsync();
+                List<Product> products=JsonSerializer.Deserialize<List<Product>>(content);
+                return products;
+            };
         }
     }
 }
